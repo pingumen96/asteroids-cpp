@@ -69,9 +69,6 @@ sf::Color Asteroid::getRandomColor() const {
 
 void Asteroid::update(float deltaTime) {
 	shape.move(velocity * deltaTime);
-
-	std::cout << "Rotation * delta time" << rotationSpeed * deltaTime << std::endl;
-
 	shape.rotate(rotationSpeed * deltaTime);
 	wrapScreen();
 }
