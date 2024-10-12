@@ -10,14 +10,19 @@ public:
     void update(float deltaTime) override;
     void draw(sf::RenderWindow& window) const override;
 
-    sf::FloatRect getBounds() const override;
-    sf::Vector2f getPosition() const override;
+	sf::FloatRect getBounds() const override;
+	ShapeType getShapeType() const override { return ShapeType::Convex; }
+    sf::Shape& getShape() override { return shape; }
+
     ObjectType getType() const override { return ObjectType::Asteroid; }
+	void collide(GameObject& other) override;
 
 private:
     void wrapScreen();
 	sf::Color getRandomColor() const;
+	void setOriginToCenter();
 
-    sf::CircleShape shape;
+    sf::ConvexShape shape;
     sf::Vector2f velocity;
+	float rotationSpeed;
 };

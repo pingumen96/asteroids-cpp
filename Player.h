@@ -2,6 +2,7 @@
 
 #include "GameObject.h"
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <memory>
 #include <vector>
 
@@ -12,12 +13,15 @@ public:
     void update(float deltaTime) override;
     void draw(sf::RenderWindow& window) const override;
 
-    sf::FloatRect getBounds() const override;
-    sf::Vector2f getPosition() const override;
+	sf::FloatRect getBounds() const override;
+	sf::Shape& getShape() override { return shape; }
+    ShapeType getShapeType() const override { return ShapeType::Convex; }
     ObjectType getType() const override { return ObjectType::Player; }
 
 	// override the method to collect new objects (bullets)
     std::vector<std::unique_ptr<GameObject>> collectNewObjects() override;
+
+    void collide(GameObject& other) override;
 
 private:
     void wrapScreen();
@@ -30,6 +34,10 @@ private:
 
     float shootCooldown = 0.0f;
     const float shootCooldownDuration = 0.5f;
+
+    // sound management
+	sf::SoundBuffer shootBuffer;
+	sf::Sound shootSound;
 
 	// new objects created by the player
     std::vector<std::unique_ptr<GameObject>> newObjects;

@@ -1,4 +1,5 @@
 #include "Bullet.h"
+#include "Utilities.h"
 #include <cmath>
 
 constexpr float PI = 3.14159265f;
@@ -26,6 +27,14 @@ sf::FloatRect Bullet::getBounds() const {
 	return shape.getGlobalBounds();
 }
 
-sf::Vector2f Bullet::getPosition() const {
-	return shape.getPosition();
+void Bullet::collide(GameObject& other) {
+	// Gestiamo la collisione tra Bullet e Asteroid
+	if (other.getType() == ObjectType::Asteroid) {
+		if (other.getShapeType() == ShapeType::Convex) {
+			if (Utilities::checkCollision(dynamic_cast<sf::ConvexShape&>(other.getShape()), shape)) {
+				setActive(false);
+				other.setActive(false);
+			}
+		}
+	}
 }

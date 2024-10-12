@@ -11,8 +11,11 @@ public:
     void draw(sf::RenderWindow& window) const override;
 
     sf::FloatRect getBounds() const override;
-    sf::Vector2f getPosition() const override;
+    sf::Shape& getShape() override { return shape; }
+	ShapeType getShapeType() const override { return ShapeType::Circle; }
     ObjectType getType() const override { return ObjectType::Bullet; }
+
+    void collide(GameObject& other) override;
 
 private:
     sf::CircleShape shape;

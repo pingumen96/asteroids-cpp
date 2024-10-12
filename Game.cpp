@@ -2,6 +2,7 @@
 #include "Asteroid.h"
 #include "Bullet.h"
 #include "Player.h"
+#include "Utilities.h"
 #include <algorithm>
 #include <iostream>
 
@@ -10,8 +11,9 @@ Game::Game()
 	window.setFramerateLimit(60);
 
 	// create player and add it to the game objects
-	auto player = std::make_unique<Player>();
-	gameObjects.push_back(std::move(player));
+	auto playerObject = std::make_unique<Player>();
+	player = playerObject.get();
+	gameObjects.push_back(std::move(playerObject));
 
 	// set starting score in the UI
 	gameUI.setScore(score);
@@ -59,12 +61,15 @@ void Game::update(float deltaTime) {
 
 	handleCollisions();
 
+	checkGameOver();
+
 	gameObjects.erase(
 		std::remove_if(gameObjects.begin(), gameObjects.end(),
 			[](const std::unique_ptr<GameObject>& obj) {
 				return !obj->isActive();
 			}),
 		gameObjects.end());
+
 }
 
 void Game::handleCollisions() {
@@ -73,26 +78,19 @@ void Game::handleCollisions() {
 			auto& objA = gameObjects[i];
 			auto& objB = gameObjects[j];
 
-			if (objA->getBounds().intersects(objB->getBounds())) {
-				auto typeA = objA->getType();
-				auto typeB = objB->getType();
-
-				if ((typeA == GameObject::ObjectType::Bullet && typeB == GameObject::ObjectType::Asteroid) || (typeA == GameObject::ObjectType::Asteroid && typeB == GameObject::ObjectType::Bullet)) {
-					objA->setActive(false);
-					objB->setActive(false);
-
-					// increase score
-					score += 10;
-					gameUI.setScore(score); // update score in the UI
-				} else if ((typeA == GameObject::ObjectType::Player && typeB == GameObject::ObjectType::Asteroid) || (typeA == GameObject::ObjectType::Asteroid && typeB == GameObject::ObjectType::Player)) {
-					std::cout << "Hai perso!" << std::endl;
-					window.close();
-					return;
-				}
-			}
+			objA->collide(*objB);
+			objB->collide(*objA);
 		}
 	}
 }
+
+void Game::checkGameOver() {
+	if (!player->isActive()) {
+		std::cout << "Game Over! Il giocatore è stato distrutto." << std::endl;
+		window.close();
+	}
+}
+
 
 void Game::render() {
 	window.clear();

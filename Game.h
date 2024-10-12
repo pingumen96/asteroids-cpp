@@ -2,6 +2,7 @@
 
 #include "GameObject.h"
 #include "GameUI.h"
+#include "Player.h"
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include <vector>
@@ -17,7 +18,11 @@ private:
     void render();
     void handleCollisions();
 
+	void checkGameOver();
+
     sf::RenderWindow window;
+
+	Player* player = nullptr;
     std::vector<std::unique_ptr<GameObject>> gameObjects;
 
     float spawnTimer = 0.0f;

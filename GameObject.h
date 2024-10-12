@@ -6,6 +6,9 @@
 
 class GameObject {
 public:
+	enum class ObjectType { Player, Bullet, Asteroid, };
+	enum class ShapeType { Circle, Convex, };
+
 	virtual ~GameObject() = default;
 
 	// virtual methods to be implemented by derived classes
@@ -14,16 +17,13 @@ public:
 
 	// collision detection
 	virtual sf::FloatRect getBounds() const = 0;
-	virtual sf::Vector2f getPosition() const = 0;
+	virtual ShapeType getShapeType() const = 0;
+	virtual sf::Shape& getShape() = 0;
 
 	// object type to identify the derived class
-	enum class ObjectType {
-		Player,
-		Bullet,
-		Asteroid,
-	};
 
 	virtual ObjectType getType() const = 0;
+	virtual void collide(GameObject& otherObject) = 0;
 
 	// state management
 	void setActive(bool active) { this->active = active; }
