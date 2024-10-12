@@ -1,7 +1,7 @@
 #pragma once
 
 #include "GameObject.h"
-#include "GameUI.h" // Includi la UI
+#include "GameUI.h"
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include <vector>
@@ -21,7 +21,7 @@ private:
     std::vector<std::unique_ptr<GameObject>> gameObjects;
 
     float spawnTimer = 0.0f;
-    int score = 0; // Punteggio del gioco
+    int score = 0;
 
-    GameUI gameUI; // Istanza della UI
+    GameUI gameUI;
 };

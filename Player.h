@@ -16,7 +16,7 @@ public:
     sf::Vector2f getPosition() const override;
     ObjectType getType() const override { return ObjectType::Player; }
 
-    // Sovrascrivi il metodo per raccogliere nuovi oggetti (proiettili sparati)
+	// override the method to collect new objects (bullets)
     std::vector<std::unique_ptr<GameObject>> collectNewObjects() override;
 
 private:
@@ -28,10 +28,9 @@ private:
     const float acceleration = 400.0f;
     const float damping = 0.99f;
 
-    // Cooldown per lo sparo
     float shootCooldown = 0.0f;
     const float shootCooldownDuration = 0.5f;
 
-    // Contenitore per nuovi oggetti creati (proiettili)
+	// new objects created by the player
     std::vector<std::unique_ptr<GameObject>> newObjects;
 };

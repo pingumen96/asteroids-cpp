@@ -16,6 +16,7 @@ public:
 
 private:
     void wrapScreen();
+	sf::Color getRandomColor() const;
 
     sf::CircleShape shape;
     sf::Vector2f velocity;

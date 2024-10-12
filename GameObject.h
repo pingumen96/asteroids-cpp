@@ -6,36 +6,34 @@
 
 class GameObject {
 public:
-    virtual ~GameObject() = default;
+	virtual ~GameObject() = default;
 
-    // Metodi virtuali puri che devono essere implementati dalle classi derivate
-    virtual void update(float deltaTime) = 0;
-    virtual void draw(sf::RenderWindow& window) const = 0;
+	// virtual methods to be implemented by derived classes
+	virtual void update(float deltaTime) = 0;
+	virtual void draw(sf::RenderWindow& window) const = 0;
 
-    // Per la gestione delle collisioni
-    virtual sf::FloatRect getBounds() const = 0;
-    virtual sf::Vector2f getPosition() const = 0;
+	// collision detection
+	virtual sf::FloatRect getBounds() const = 0;
+	virtual sf::Vector2f getPosition() const = 0;
 
-    // Tipo dell'oggetto, per identificare la classe derivata
-    enum class ObjectType {
-        Player,
-        Bullet,
-        Asteroid,
-        // Puoi aggiungere altri tipi se necessario
-    };
+	// object type to identify the derived class
+	enum class ObjectType {
+		Player,
+		Bullet,
+		Asteroid,
+	};
 
-    virtual ObjectType getType() const = 0;
+	virtual ObjectType getType() const = 0;
 
-    // Gestione dello stato attivo/inattivo dell'oggetto
-    void setActive(bool active) { this->active = active; }
-    bool isActive() const { return active; }
+	// state management
+	void setActive(bool active) { this->active = active; }
+	bool isActive() const { return active; }
 
-    // Per raccogliere nuovi oggetti creati durante l'update (ad esempio, proiettili)
-    virtual std::vector<std::unique_ptr<GameObject>> collectNewObjects()
-    {
-        return {};
-    }
+	// to collect new objects created by the object (e.g. bullets)
+	virtual std::vector<std::unique_ptr<GameObject>> collectNewObjects() {
+		return {};
+	}
 
 protected:
-    bool active = true; // Stato attivo dell'oggetto
+	bool active = true;
 };

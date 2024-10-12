@@ -1,23 +1,21 @@
 #include "GameUI.h"
 
 GameUI::GameUI() {
-    // Carica il font (assicurati di avere un file .ttf disponibile)
     if (!font.loadFromFile("res/Atari.ttf")) {
-        // Gestisci errore di caricamento
+		throw std::runtime_error("Cannot load font");
     }
 
-    // Configura il testo del punteggio
     scoreText.setFont(font);
-    scoreText.setCharacterSize(24); // Dimensione del testo
+    scoreText.setCharacterSize(24);
     scoreText.setFillColor(sf::Color::White);
-    scoreText.setPosition(10, 10); // Posizione in alto a sinistra dello schermo
+	scoreText.setPosition(10, 10); // position in the top-left corner
 }
 
 void GameUI::setScore(int newScore) {    
     score = newScore;
-    scoreText.setString("Score: " + std::to_string(score)); // Aggiorna il testo
+	scoreText.setString("Score: " + std::to_string(score)); // update the score text
 }
 
 void GameUI::draw(sf::RenderWindow& window) {
-    window.draw(scoreText); // Disegna il testo del punteggio
+    window.draw(scoreText);
 }
