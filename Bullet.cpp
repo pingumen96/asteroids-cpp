@@ -28,7 +28,6 @@ sf::FloatRect Bullet::getBounds() const {
 }
 
 void Bullet::collide(GameObject& other) {
-	// Gestiamo la collisione tra Bullet e Asteroid
 	if (other.getType() == ObjectType::Asteroid) {
 		if (other.getShapeType() == ShapeType::Convex) {
 			if (Utilities::checkCollision(dynamic_cast<sf::ConvexShape&>(other.getShape()), shape)) {
