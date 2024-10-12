@@ -361,3 +361,7 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/libs/SFML-2.6.1
+/res/assets.png
+/res/Atari.ttf
+/res/Mushroom.png
