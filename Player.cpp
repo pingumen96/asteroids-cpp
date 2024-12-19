@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "Bullet.h"
 #include "Utilities.h"
+#include "Command.h"
 #include <cmath>
 #include <numbers>
 
@@ -18,44 +19,34 @@ Player::Player() {
 		throw std::runtime_error("Cannot load sound file");
 	}
 	shootSound.setBuffer(shootBuffer);
+
+	keyBindings[sf::Keyboard::Left] = std::make_unique<RotateLeftCommand>();
+	keyBindings[sf::Keyboard::Right] = std::make_unique<RotateRightCommand>();
+	keyBindings[sf::Keyboard::Up] = std::make_unique<MoveForwardCommand>();
+	keyBindings[sf::Keyboard::Space] = std::make_unique<ShootCommand>();
 }
 
 void Player::update(float deltaTime) {
-	// rotation
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-		shape.rotate(-200 * deltaTime);
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-		shape.rotate(200 * deltaTime);
-
-	// front movement
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-		float angleRad = (shape.getRotation() - 90) * PI / 180.0f;
-		sf::Vector2f direction(std::cos(angleRad), std::sin(angleRad));
-		velocity += direction * acceleration * deltaTime;
+	for (const auto& [key, command] : keyBindings) {
+		if (sf::Keyboard::isKeyPressed(key)) {
+			command->execute(*this, deltaTime);
+		}
 	}
 
-	// reduce velocity (damping)
+	// Riduzione velocità (damping)
 	velocity *= damping;
 
-	// move the spaceship
+	// Muovi l'astronave
 	shape.move(velocity * deltaTime);
 
-	// cooldown
+	// Cooldown
 	if (shootCooldown > 0.0f) {
 		shootCooldown -= deltaTime;
 	}
 
-	// shoot (only if the cooldown is over)
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && shootCooldown <= 0.0f) {
-		auto bullet = std::make_unique<Bullet>(shape.getPosition(), shape.getRotation());
-		newObjects.push_back(std::move(bullet));
-		shootCooldown = shootCooldownDuration; // reset the cooldown
-
-		shootSound.play();
-	}
-
 	wrapScreen();
 }
+
 
 void Player::draw(sf::RenderWindow& window) const {
 	window.draw(shape);

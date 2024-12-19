@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="Asteroid.cpp" />
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="Commands.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameUI.cpp" />
     <ClCompile Include="main.cpp" />
@@ -31,6 +32,8 @@
   <ItemGroup>
     <ClInclude Include="Asteroid.h" />
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="Command.h" />
+    <ClInclude Include="Commands.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameUI.h" />
